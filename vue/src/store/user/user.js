@@ -20,64 +20,65 @@ const actions = {
             'Content-Type': 'application/json'}
         axios.post(url, loginData , headers )
             .then(({data})=>{
-                if(data.result) {
+                if(data.result == "success") {
                     commit('LOGIN_COMMIT', data)
+                    localStorage.setItem('auth',data.user.auth)
+                    localStorage.setItem("token", data.token)
+                    localStorage.setItem("userId",data.user.userid)
+                    if(data.user.auth==0) {
+                        if(data.mycar){localStorage.setItem("mycar", JSON.stringify(data.mycar))
+                            if(data.record){localStorage.setItem("record", JSON.stringify(data.record))}
+                        }
+                        router.push('/')
+                    }else{
+                        router.push('/companyHome')
+                    }
                 }else{
                     commit('fail_commit')
                 }
             })
             .catch(()=>{
-                state.fail = true
+                alert('axios fail')
             })
     },
     async logout({commit}){
         commit('LOGOUT_COMMIT')
+        localStorage.removeItem("token")
+        localStorage.removeItem("mycar")
+        localStorage.removeItem("record")
+        localStorage.removeItem("userId")
+
     },
     async getUserInfo({commit}){
-        const token = localStorage.getItem("token")
-        let headers = {headers : {
-                'Accept' : 'application/json',
-            }}
-        axios.post('http://localhost:8080/getUserInfo',token,headers)
+        let token = localStorage.getItem("token")
+        let headers = {  'authorization': 'JWT fefege..',
+            'Accept' : 'application/json',
+            'Content-Type': 'application/json'}
+        axios.post('http://localhost:8080/getUserInfo/'+token , headers)
             .then(({data})=>{
-                if(data.result){
+                if(data.result === "success"){
                     commit('LOGIN_COMMIT', data)
                 }else{
                     commit('LOGOUT_COMMIT')
-                    alert(`로그인을 다시 해주세요!`)
-                    router.push('/login')
+
                 }
             })
     }
 }
 const mutations = {
     LOGIN_COMMIT(state, data){
-        state.fail = false
         state.auth = true
         state.user = data.user
-        localStorage.setItem("token", data.token)
-        localStorage.setItem("userId",data.user.userid)
-        if(data.user.auth==="USER") {
-            if(data.mycar!=undefined){
-                localStorage.setItem("mycar", JSON.stringify(data.mycar))
-                if(data.record!=undefined){
-                    localStorage.setItem("record", JSON.stringify(data.record))
-                }
-            }
-            router.push('/')
-        }else{
-            router.push('/companyHome')
-        }
     },
 
     LOGOUT_COMMIT(state){
-        localStorage.clear()
-        state.fail = false
         state.auth = false
-        state.user  = {}
+        state.member  = {}
+        console.log('로그아웃' + state.auth)
     },
     fail_commit(state){
         state.fail = true
+
     }
 }
 export default {

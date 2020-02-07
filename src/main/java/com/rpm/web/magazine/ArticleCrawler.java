@@ -127,6 +127,7 @@ public class ArticleCrawler {
             Keyword kwrd = kl.get(i);
             if ( stopWordFillter(kwrd) ) {
                 kwrd = setWeightValue(kwrd);
+                System.out.println(kwrd.getString() + "///"+ kwrd.getCnt() );
                 extractedWordRepository.save(new ExtractedWord( kwrd.getString() , kwrd.getCnt() ));
             }
         }

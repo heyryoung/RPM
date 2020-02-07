@@ -59,7 +59,7 @@
         boardSeq: '',
         empty:true,
         fall:false,
-        myContent:false
+        myContent:true
       }
     },
     created(){

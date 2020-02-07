@@ -5,14 +5,12 @@ import com.rpm.web.company.CompanyRepository;
 import com.rpm.web.social.SocialInit;
 import com.rpm.web.social.SocialRepository;
 import com.rpm.web.util.UserDummy;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.List;
 
 @Order(value=2)
@@ -47,11 +45,10 @@ public class UserInit implements ApplicationRunner {
                 User user =new User();
                 user.setUserid(el);
                 user.setName(companyRepository.findCenterNameByCenterCode(el));
-                user.setPasswd(BCrypt.hashpw(el, BCrypt.gensalt()));
+                user.setPasswd(el);
                 user.setEmail(el+"@gmail.com");
                 user.setAuth(1);
                 user.setRegion(companyRepository.findRigionByCenterCode(el));
-                user.setRoles(Collections.singletonList("ADMIN"));
                 userRepository.save(user);
             });
         }
