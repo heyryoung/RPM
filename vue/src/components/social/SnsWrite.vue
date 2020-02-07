@@ -293,7 +293,6 @@
                     }
                     axios.post(`${url}/writeContent`, data, headers)
                         .then((res) => {
-                            console.log(res)
                             if (res.data)
                                 this.$router.push({path: '/sns'})
 

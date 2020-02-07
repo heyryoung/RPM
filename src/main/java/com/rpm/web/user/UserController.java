@@ -27,7 +27,11 @@ public class UserController {
     @PostMapping("/join")
     public HashMap<String, Object> join(@RequestBody User param){
         HashMap<String, Object> map = new HashMap<>();
-        userRepository.save(param);
+        try{
+            userRepository.save(param);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if (user != null) {
             map.put("msg", "SUCCESS");
             map.put("user", user);
