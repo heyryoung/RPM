@@ -10,11 +10,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void withDrawl(String userid) {
-        try{
-            userRepository.delete(userRepository.findByUserid(userid));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        userRepository.delete(userRepository.findByUserid(userid));
     }
 
     @Override

@@ -114,6 +114,7 @@ public class SocialController {
     @GetMapping("/thumbDown/{boardSeq}/{userid}")
     public Boolean thumbDown(@PathVariable String boardSeq, @PathVariable String userid){
         socialService.thumbDown(boardSeq, userid);
+        System.out.println(userid);
         return true;
     }
 
@@ -124,6 +125,7 @@ public class SocialController {
         User user = userRepository.findByUserid(userid);
         Thumb thumb = thumbRepository.findByBoardSeqAndUserSeq(social, user);
         if(thumb != null){result = true;}
+        System.out.println(userid);
         return result;
     }
 
