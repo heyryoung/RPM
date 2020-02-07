@@ -151,7 +151,6 @@
     import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
     const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview);
     import axios from "axios"
-    import { mapState } from 'vuex'
     let url = 'http://localhost:8080'
 
     export default{
@@ -186,14 +185,6 @@
         },
         components: {
             FilePond
-        },
-        computed:{
-            ...mapState({
-                makerList: state => state.contents.makerList,
-                modelList : state => state.contents.modelList,
-                modelListIsOpen : state => state.contents.modelListIsOpen,
-            }),
-
         },
         created(){
             if(this.$store.state.user.auth===false){
@@ -231,7 +222,7 @@
                 this.keyWord1 = this.defaultKeyWord1
                 this.keyWord2 = this.defaultKeyWord2
                 this.keyWord3 = this.defaultKeyWord3
-
+                this.$store.dispatch('contents/getCategory1',{'param':'IMP','column':'CAR_TYPE'})
 
             },
             searchKeyClick(searchKeyID){
@@ -462,11 +453,15 @@
     .searchcont1 .spreset ul{ width: 220px; }
     select{visibility:hidden;}
     .selectric-wrapper select{visibility:visible;}
-    .searchcont1 .selectric { position:absolute; width: 100%; border:1px solid #ddd; background-color: #fff; }
+    .searchcont1 .selectric {width: 100%; border:1px solid #ddd; background-color: #fff; }
     .selectric-items .selectric-scroll{overflow-x:hidden; overflow-y:auto;}
     .selectric-items .selectric-scroll li{padding-right:60px;position:relative}
     .selectric-items .selectric-scroll li em{position:absolute;top: 10px ;right:20px}
     .searchcont1 .selectric .label { width: 100%; height: 40px; line-height: 40px; color: #acacaf;}
 
+    .mc_search .selectric-items .selectric-scroll {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
 </style>
