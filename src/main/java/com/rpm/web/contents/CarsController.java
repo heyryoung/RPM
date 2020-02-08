@@ -266,10 +266,10 @@ public class CarsController {
         return trunk.get();
     }
 
-    @GetMapping("/setProduct/{carcd}/{date}/{userid}")
+/*    @GetMapping("/setProduct/{carcd}/{date}/{userid}")
     public void setProduct(@PathVariable String carcd, @PathVariable String date, @PathVariable String userid){
         recentSeenCarRepository.save(new RecentSeenCar(carcd, Long.parseLong(date), userid));
-    }
+    }*/
 
     @GetMapping("/searchWordRank")
     public Set<String> getSearchWordRank(){

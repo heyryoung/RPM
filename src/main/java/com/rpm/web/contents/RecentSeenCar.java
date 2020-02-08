@@ -21,7 +21,7 @@ public class RecentSeenCar implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull @Column(name = "RSCID") private Long rscId;
-    @NotNull @Column(name = "CARCD", length = 12) private String carcd;
+    @NotNull @Column(name = "CARCD", length = 15) private String carcd;
     @Column(name = "USERID", length = 50) private String userId;
     @Column(name = "SEARCHTIME") private Long searchTime;
 
