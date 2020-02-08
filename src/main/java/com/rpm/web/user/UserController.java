@@ -1,21 +1,22 @@
 package com.rpm.web.user;
 
-import com.rpm.web.proxy.Trunk;
-import com.rpm.web.security.JwtTokenProvider;
-import org.mindrot.jbcrypt.BCrypt;
+import com.rpm.web.carbook.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
 public class UserController {
     @Autowired User user;
     @Autowired UserRepository userRepository;
+    @Autowired Carbook carbook;
+    @Autowired CarbookRepository carbookRepository;
+    @Autowired Record record;
+    @Autowired CarbookService carbookService;
     @Autowired UserService userService;
-    @Autowired JwtTokenProvider jwtTokenProvider;
-    @Autowired UserForAxios userForAxios;
-    @Autowired Trunk<Object> trunk;
 
 
     @GetMapping("/idCheck/{userid}")
@@ -24,93 +25,69 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public Map<String, Object> join(@RequestBody User param){
-        trunk.clear();
-        userRepository.save(User.builder()
-                .userid(param.getUserid())
-                .passwd(BCrypt.hashpw(param.getPassword(), BCrypt.gensalt()))
-                .name(param.getName())
-                .birthMonth(param.getBirthMonth())
-                .email(param.getEmail())
-                .gender(param.getGender())
-                .region(param.getRegion())
-                .auth(0)
-                .roles(Collections.singletonList("USER"))
-                .build());
-        if (userRepository.findByUserid(param.getUserid())!=null) {
-            trunk.put(Arrays.asList("result"), Arrays.asList(true));
-        } else {
-            trunk.put(Arrays.asList("result"), Arrays.asList(false));
+    public HashMap<String, Object> join(@RequestBody User param){
+        HashMap<String, Object> map = new HashMap<>();
+        try{
+            userRepository.save(param);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return trunk.get();
+        if (user != null) {
+            map.put("msg", "SUCCESS");
+            map.put("user", user);
+        } else {
+            map.put("msg", "FAIL");
+        }
+        return map;
     }
-
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody User param) {
-        trunk.clear();
-        user = userRepository.findByUserid(param.getUserid());
-        if (BCrypt.checkpw(param.getPasswd(), user.getPasswd())) {
-            trunk.put(Arrays.asList("user","token"),
-                    Arrays.asList(makeUserAxios(user),jwtTokenProvider.createToken(user.getUserid(), user.getRoles())));
-            trunk.put(Arrays.asList("result"), Arrays.asList(true));
+    public HashMap<String, Object> login(@RequestBody User param) {
+        HashMap<String, Object> map = new HashMap<>();
+        user = userRepository.findByUseridAndPasswd(param.getUserid(), param.getPasswd());
+        if (user != null) {
+            map.put("user", user);
+            map.put("token", user.getUserSeq());
+            carbook = carbookRepository.findBySeq(user.getUserSeq());
+            if(carbook!=null ){
+                map.put("mycar", carbook);
+
+                List<Record> records = carbookService.getRecords(carbook.getMycarId());
+                if(records != null){
+                    map.put("record", records);
+
+                }
+            }
+            map.put("result", "success");
         } else {
-            trunk.put(Arrays.asList("result"), Arrays.asList(false));
+            map.put("result", "fail");
         }
-        return trunk.get();
+
+        return map;
+    }
+    @PostMapping("/getUserInfo/{token}")
+    public HashMap<String, Object> getUserInfo(@PathVariable String token){
+        HashMap<String, Object> map = new HashMap<>();
+        user = userRepository.findByUserSeq(Integer.parseInt(token));
+        if(user != null){
+            map.put("result" , "success");
+            map.put("user", user);
+
+        }else{
+            map.put("result", "fail");
+        }
+        return map;
+    }
+    @PostMapping("update")
+    public HashMap<String, Object> update( @RequestBody User user){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("user", userService.update(user));
+        map.put("msg", "success");
+        return map;
+    }
+    @GetMapping("withDrawl/{userid}")
+    public String withDrawl(@PathVariable String userid){
+        userService.withDrawl(userid);
+        return "success";
     }
 
-    @PostMapping("/getUserInfo")
-    public HashMap<String, Object> getUserInfo(@RequestBody String token){
-        trunk.clear();
-        if(token != null &&jwtTokenProvider.validateToken(token)){
-            user = userRepository.findByUserid(jwtTokenProvider.getUserPk(token));
-            trunk.put(Arrays.asList("token","result", "user"), Arrays.asList(token, true, makeUserAxios(user)));
-        }else{
-            trunk.put(Arrays.asList("result"), Arrays.asList(false));
-        }
-        return trunk.get();
-    }
-
-    @PostMapping("/update")
-    public Map<String, Object> update(@RequestBody Map<String, String> param){
-        trunk.clear();
-        if(jwtTokenProvider.validateToken(param.get("token"))){
-            userService.update(User.builder().userid(param.get("userid"))
-                    .passwd(BCrypt.hashpw(param.get("passwd"), BCrypt.gensalt()))
-                    .name(param.get("username")).email(param.get("email")).gender(param.get("gender"))
-                    .birthMonth(param.get("birthMonth")).region(param.get("region")).build());
-            trunk.put(Arrays.asList("result"), Arrays.asList(true));
-        }else{
-            trunk.put(Arrays.asList("result"), Arrays.asList(false));
-        }
-        return trunk.get();
-    }
-    @PostMapping("/withDrawl")
-    public Map<String, Object> withDrawl(@RequestBody String token){
-        trunk.clear();
-        if(token != null &&jwtTokenProvider.validateToken(token)){
-            userService.withDrawl(jwtTokenProvider.getUserPk(token));
-            trunk.put(Arrays.asList("result"), Arrays.asList(true));
-        }else{
-            trunk.put(Arrays.asList("result"), Arrays.asList(false));
-        }
-        return trunk.get();
-}
-    @PostMapping("/getAuth")
-    public Map<String, Object> getAuth(@RequestBody String token){
-        trunk.clear();
-        System.out.println(token);
-        if(token != null && jwtTokenProvider.validateToken(token)){
-            trunk.put(Arrays.asList("result", "auth"), Arrays.asList(true, userRepository.findRolesByuserUserseq(user.getUserSeq())));
-        }else{
-            trunk.put(Arrays.asList("result"), Arrays.asList(false));
-        }
-        return trunk.get();
-    }
-    private UserForAxios makeUserAxios(User user) {
-        userForAxios.setUserid(user.getUserid());
-        userForAxios.setUsername(user.getName());
-        userForAxios.setAuth(userRepository.findRolesByuserUserseq(user.getUserSeq()));
-        return userForAxios;
-    }
 }

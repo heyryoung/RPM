@@ -9,11 +9,11 @@
         </div>
     </div>
     <div class="example-modal-content" v-show="question">
-        <button class="btn" @click="withDrawl" >회원탈퇴</button>
+        <button class="btn" @click="withDrawl">회원탈퇴</button>
         <button class="btn" @click="$emit('close')">취소</button>
     </div>
     <div class="example-modal-content" v-show="check">
-        <button class="btn"  @click="$emit('close')">확인</button>
+        <button class="btn" @click="$emit('close')">확인</button>
     </div>
     <div class="vue-modal-resizer"></div>
 </div>
@@ -31,23 +31,15 @@
         },
         methods:{
             withDrawl(){
-                const token = localStorage.getItem("token")
-                let headers = {headers : {
-                        'Accept' : 'application/json',
-                    }}
-                axios.post(`http://localhost:8080/withDrawl/`,token,headers)
+                axios.get(`http://localhost:8080/withDrawl/${this.$store.state.user.user.userid}`)
                 .then((res)=>{
-                    if(res.data.result){
+                    if(res.data ==="success"){
                         this.question=false
                         this.check= true
-                        alert(`RPM을 이용해 주셔서 감사합니다.`)
-                        this.$store.dispatch('user/logout')
-                        this.$router.push('/')
                     }
                 })
                 .catch(()=>{
-                    alert("존재하지 않는 회원입니다.")
-                    this.$router.push('/')
+                    alert("다시 시도해주세요")
                 })
 
             },

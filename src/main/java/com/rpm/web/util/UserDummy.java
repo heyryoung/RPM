@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.rpm.web.user.User;
-import org.mindrot.jbcrypt.BCrypt;
 
 
 public class UserDummy{
@@ -56,14 +55,13 @@ public class UserDummy{
         email = userId + "@"+emails.get(0);
         region = regions.get(0);
         user.setUserid(userId);
-        user.setPasswd(BCrypt.hashpw(passwd, BCrypt.gensalt()));
+        user.setPasswd(passwd);
         user.setName(name);
         user.setGender(gender);
         user.setEmail(email);
         user.setRegion(region);
         user.setAuth(0);
         user.setBirthMonth(setBirth());
-        user.setRoles(Collections.singletonList("USER"));
         return user;
     }
     public String setBirth(){
