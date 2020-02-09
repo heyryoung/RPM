@@ -37,9 +37,8 @@ public class RecommenderInit implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 
         DataModel dataModel;
-        System.out.println( new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss").format (System.currentTimeMillis())+ "  INFO 18844 --- [           RecommenderInit ]         : RecommenderInit End ");
-        makeADummySeenCar();
-/*
+       // makeADummySeenCar();
+        System.out.println( new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss").format (System.currentTimeMillis())+ "  INFO 18844 --- [           RecommenderInit ]         : RecommenderInit Start ");
         dataModel = new FileDataModel(new File("csv/recommender.csv"));
 
 
@@ -48,16 +47,16 @@ public class RecommenderInit implements ApplicationRunner {
         GenericItemBasedRecommender genericItemBasedRecommender = new GenericItemBasedRecommender( dataModel , itemSimilarity );
 
         int x = 1;
-        long itemId = 3332;
+        long itemId = 303;
         List<RecommendedItem> recommendedItems = genericItemBasedRecommender.mostSimilarItems( itemId , 10);
 
-        System.out.println("recommendedItems>>>" + recommendedItems.size());
         for (RecommendedItem recommendedItem : recommendedItems) {
             System.out.println(itemId + "," + recommendedItem.getItemID() + " , " + recommendedItem.getValue());
         }
-*/
+        System.out.println( new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss").format (System.currentTimeMillis())+ "  INFO 18844 --- [           RecommenderInit ]         : RecommenderInit End ");
 
-        System.out.println( new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss").format (System.currentTimeMillis())+ "  INFO 18844 --- [           RecommenderInit ]         : RecommenderInit Start ");
+
+
     }
 
 
@@ -104,9 +103,9 @@ public class RecommenderInit implements ApplicationRunner {
             for (int j = 0; j < categoryGroup1ListSize; j++) {
                 recentSeenCarRepository.save(new RecentSeenCar()
                         .builder()
-                        .userId(users.get(i).getUserid())
-                        .carcd(categoryGroup1List.get((int) (Math.random() * categoryGroup1ListSize)).getCarcd())
-                        .searchTime((int) (Math.random()*2))
+                        .userSeq(users.get(i).getUserSeq())
+                        .cid(categoryGroup1List.get((int) (Math.random() * categoryGroup1ListSize)).getCid())
+                        .preference((int) (Math.random()*2))
                         .build());
             }
         }
@@ -114,9 +113,9 @@ public class RecommenderInit implements ApplicationRunner {
             for (int j = 0; j < categoryGroup2ListSize; j++) {
                 recentSeenCarRepository.save(new RecentSeenCar()
                         .builder()
-                        .userId(users.get(i).getUserid())
-                        .carcd(categoryGroup2List.get((int) (Math.random() * categoryGroup2ListSize)).getCarcd())
-                        .searchTime((int) (Math.random()*2))
+                        .userSeq(users.get(i).getUserSeq())
+                        .cid(categoryGroup2List.get((int) (Math.random() * categoryGroup2ListSize)).getCid())
+                        .preference((int) (Math.random()*2))
                         .build());
             }
         }
@@ -124,9 +123,9 @@ public class RecommenderInit implements ApplicationRunner {
             for (int j = 0; j < categoryGroup3ListSize; j++) {
                 recentSeenCarRepository.save(new RecentSeenCar()
                         .builder()
-                        .userId(users.get(i).getUserid())
-                        .carcd(categoryGroup3List.get((int) (Math.random() * categoryGroup3ListSize)).getCarcd())
-                        .searchTime((int) (Math.random()*2))
+                        .userSeq(users.get(i).getUserSeq())
+                        .cid(categoryGroup3List.get((int) (Math.random() * categoryGroup3ListSize)).getCid())
+                        .preference((int) (Math.random()*2))
                         .build());
             }
         }
@@ -134,9 +133,9 @@ public class RecommenderInit implements ApplicationRunner {
             for (int j = 0; j < categoryGroup4ListSize; j++) {
                 recentSeenCarRepository.save(new RecentSeenCar()
                         .builder()
-                        .userId(users.get(i).getUserid())
-                        .carcd(categoryGroup4List.get((int) (Math.random() * categoryGroup4ListSize)).getCarcd())
-                        .searchTime((int) (Math.random()*2))
+                        .userSeq(users.get(i).getUserSeq())
+                        .cid(categoryGroup4List.get((int) (Math.random() * categoryGroup4ListSize)).getCid())
+                        .preference((int) (Math.random()*2))
                         .build());
             }
         }

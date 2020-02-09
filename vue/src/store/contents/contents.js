@@ -123,7 +123,17 @@ const actions = {
         commit( 'CONDITIONSELECTOR' , targetItem );
     },
     async addSeenHistory ({ commit }, param ) {
-        commit('ADDSEENHISTORY', param );
+        /*       let headers = {headers : {
+                   'Accept' : 'application/json',
+               }}
+       axios
+               .get(`http://localhost:8080/recordRecentSeenCar/`+localStorage.getItem("userSeq")+'/'+param.cid , headers)
+               .then(({data})=>{
+                   commit('ADDSEENHISTORY', data )})
+               .catch(()=>{
+                   alert('잘못된 요청입니다.')
+               })*/
+        commit('ADDSEENHISTORY', param )
     },
     async setPageLimit({ commit }, limit){
         commit('PAGELIMIT', limit)

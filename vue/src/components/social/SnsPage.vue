@@ -191,6 +191,7 @@
     right: 0;
     margin: 0 0 15px;
     box-shadow: 0 3px 5px rgba(116, 187, 248, 0.11), 0 3px 5px rgba(185, 208, 214, 0.24);
+    border-radius: 10px 10px;
     /*box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);*/
   }
   #portfolio .portfolio-item:hover {
@@ -208,7 +209,7 @@
 
   @media (min-width: 1200px) {
     .container {
-      max-width: 1140px;
+      max-width: 1190px;
     }
   }
 

@@ -9,4 +9,5 @@ import org.springframework.stereotype.Component;
 @Setter
 public class UserForAxios {
     private String userid, username, auth ;
+    private long userseq;
 }

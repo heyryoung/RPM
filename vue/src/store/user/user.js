@@ -57,6 +57,7 @@ const mutations = {
         state.user = data.user
         localStorage.setItem("token", data.token)
         localStorage.setItem("userId",data.user.userid)
+        localStorage.setItem("userSeq",data.user.userseq)
         if(data.user.auth==="USER") {
             if(data.mycar!=undefined){
                 localStorage.setItem("mycar", JSON.stringify(data.mycar))

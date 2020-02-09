@@ -153,6 +153,7 @@
     font-family: 'Segoe UI';
     padding: 20px 0;
     text-align: center;
+    box-shadow: 0 14px 28px rgba(47, 72, 119, 0.25), 0 10px 10px rgba(84, 112, 248, 0.22);
   }
   .portfolio-modal .modal-content img {
     margin-bottom: 30px;

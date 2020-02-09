@@ -128,6 +128,7 @@ public class UserController {
 
     private UserForAxios makeUserAxios( User user ) {
         userForAxios.setUserid( user.getUserid() );
+        userForAxios.setUserseq( user.getUserSeq() );
         userForAxios.setUsername( user.getName() );
         userForAxios.setAuth( userRepository.findRolesByuserUserseq( user.getUserSeq() ));
         return userForAxios;

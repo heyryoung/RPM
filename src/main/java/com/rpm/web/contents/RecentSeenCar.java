@@ -21,20 +21,22 @@ public class RecentSeenCar implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull @Column(name = "RSCID") private Long rscId;
-    @NotNull @Column(name = "CARCD", length = 15) private String carcd;
-    @Column(name = "USERID", length = 50) private String userId;
+    @NotNull @Column(name = "CID", length = 15) private Long cid;
+    @Column(name = "USERSEQ", length = 50) private Long userSeq;
     @Column(name = "SEARCHTIME") private Long searchTime;
+    @Column(name = "PREFERENCE") private int preference;
 
 
     @Builder
     public RecentSeenCar(
-            String carcd, long searchTime, String userId
+            Long cid, Long searchTime, Long userSeq, int preference
     ) {
-        Assert.hasText(carcd, "carcd must not be empty");
+        Assert.hasText(String.valueOf(cid), "carcd must not be empty");
 
-        this.carcd = carcd;
-        this.userId = userId;
+        this.cid = cid;
+        this.userSeq = userSeq;
         this.searchTime = searchTime;
+        this.preference = preference;
     }
 
 

@@ -15,6 +15,8 @@ import java.util.stream.StreamSupport;
 @Lazy
 public class CarsServiceImpl implements CarsService {
     @Autowired private CarsRepository carsRepository;
+    @Autowired
+    CarsService carsService;
 
     @Override
     public Map<String, List<Cars>> getCategoryByCarType(Iterable<Cars> cars) {
@@ -203,5 +205,14 @@ public class CarsServiceImpl implements CarsService {
                 .collect(Collectors.groupingBy(Cars::getMakenm, Collectors.groupingBy(Cars::getModelGrpNm)));
     }
 
+    @Override
+    public List<Cars> findCarBySelectedCategory(String categorycd) {
+        return carsRepository.findByCategorycd(categorycd);
+    }
+
+    @Override
+    public Cars findByCid(Long cid) {
+        return carsRepository.findByCid(cid);
+    }
 
 }

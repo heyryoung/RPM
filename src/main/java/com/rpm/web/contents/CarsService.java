@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -57,4 +58,7 @@ public interface CarsService {
 
     Map<String,Map<String,List<Cars>>> findMakerAndModelByModelText(String modelnmText);
 
+    List<Cars> findCarBySelectedCategory(String categorycd);
+
+    Cars findByCid(Long cid);
 }

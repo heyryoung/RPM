@@ -1,5 +1,6 @@
-package com.rpm.web.contents;
+package com.rpm.web.recommender;
 
+import com.rpm.web.contents.*;
 import com.rpm.web.proxy.Box;
 import com.rpm.web.proxy.Proxy;
 import com.rpm.web.proxy.Table;
@@ -15,60 +16,29 @@ import java.util.stream.StreamSupport;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
-public class CarsController {
+public class RecommenderController {
     @Autowired
     Proxy proxy;
     @Autowired
-    CarsRepository carsRepository;
-    @Autowired
-    Box box;
-    @Autowired
     Trunk<Object> trunk;
-    @Autowired
-    CarsService carsService;
     @Autowired
     List<Cars> cars;
     @Autowired
-    StringMatch stringMatch;
+    CarsService carsService;
     @Autowired
-    RecentSearchWordRepository recentSearchWordRepository;
+    CarsRepository carsRepository;
     @Autowired
     RecentSeenCarRepository recentSeenCarRepository;
-    @Autowired
-    RecentSeenCarService recentSeenCarService;
 
 
     private List<Object> carModelList;
     private List<Object> carModelHangeulList;
 
-    public CarsController() {
+    public RecommenderController() {
         this.carModelList = new ArrayList<>();
         this.carModelHangeulList = new ArrayList<>();
     }
 
-    @GetMapping("/init")
-    public Map<String, Object> init(){
-        trunk.clear();
-        carModelList.clear();
-        carModelHangeulList.clear();
-        cars = (List<Cars>) carsRepository.findAll();
-        carModelList.addAll(cars.stream().collect(Collectors.groupingBy(Cars::getModelnmText
-                , Collectors.counting())).keySet());
-        carModelList.forEach(s-> carModelHangeulList.add(stringMatch.seperateHan(s.toString().replace(" ", ""))));
-        cars.sort((a,b) -> a.getCid().compareTo(b.getCid()));
-        trunk.put(Arrays.asList("allCount" ,"carInitList","makerList","fuelTypeList", "regionList","categoryList")
-                ,Arrays.asList(proxy.string(carsRepository.count())
-                        ,cars.subList(0,15)
-                        ,carsService.findByMakecdWithCount(cars)
-                        ,carsService.findCarWithFuleType(cars)
-                        ,carsService.findCarWithCenterRegionCode(cars)
-                        ,carsService.findAllCategory(cars)
-                ));
-
-        return trunk.get();
-    }
-
-    @GetMapping("/getcategory/{param}/{column}")
     public Map<String, Object> getCategory(@PathVariable String param, @PathVariable String column){
         trunk.clear();
         cars = carsService.findAllByDistinct((List<Cars>) carsRepository.findAll());
@@ -94,7 +64,7 @@ public class CarsController {
         return trunk.get();
     }
 
-
+/*
     @RequestMapping("/searchWithCondition")
     public Map<String,Object> searchWithCondition(@RequestBody  SearchCondition searchCondition){
         trunk.clear();
@@ -269,11 +239,6 @@ public class CarsController {
         return trunk.get();
     }
 
-    @GetMapping("/setProduct/{carcd}/{date}/{userid}")
-    public void setProduct(@PathVariable String carcd, @PathVariable String date, @PathVariable String userid){
-        recentSeenCarRepository.save(new RecentSeenCar(carcd, Long.parseLong(date), userid));
-    }
-
     @GetMapping("/searchWordRank")
     public Set<String> getSearchWordRank(){
         return proxy.sortByValue(StreamSupport.stream(recentSearchWordRepository.findAll().spliterator(), false)
@@ -328,31 +293,5 @@ public class CarsController {
                 calcList.put(rowKey, (scla!=0)?scla/(Math.sqrt(normA)*Math.sqrt(normB)):0);
             }
         }
-    }
-
-    @GetMapping("/recordRecentSeenCar/{userseq}/{cid}")
-    public void insertRecentSeenCar (@PathVariable Long userseq , @PathVariable Long cid) {
-        cars = (List<Cars>) carsRepository.findAll();
-        Cars car = carsService.findByCid(cid);
-        List<Cars> carlistInCategory =  carsService.findCarBySelectedCategory(car.getCategorycd());
-        System.out.println(recentSeenCarRepository.findByUserSeqAndCid( userseq , cid ) + "recentSeenCarRepository.findByUserSeqAndCid( userseq , cid ).");
-        if ( !recentSeenCarRepository.findByUserSeqAndCid( userseq , cid ).equals("")) {
-            carlistInCategory.forEach( item ->
-                    recentSeenCarRepository.save(RecentSeenCar.builder()
-                            .userSeq(userseq)
-                            .cid(item.getCid())
-                            .preference( (item.getCid() == cid) ? 1 : 0 )
-                            .build())
-                    );
-        } else {
-            recentSeenCarService.update(RecentSeenCar.builder()
-                    .userSeq(userseq)
-                    .cid(cid)
-                    .preference(1)
-                    .build());
-        }
-    }
-
-
-
+    }*/
 }

@@ -20,6 +20,7 @@ public interface CarsRepository extends CrudRepository<Cars, Long> {
     public List<Cars> findByModelnmAndCenterCodeOrderByPrice(String mondelnm ,String centercode);
     public List<Cars> findByCategorycdAndCenterCode(String categorycd ,String centercode);
     public Cars  findFirstByModelnm(String modelnm);
-
     public List<Cars> findAllByCarType(String s);
+    public Cars findByCid(Long cid);
+    public List<Cars> findByCategorycd(String categorycd);
 }
