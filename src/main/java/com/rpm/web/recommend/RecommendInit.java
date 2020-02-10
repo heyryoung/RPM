@@ -62,7 +62,7 @@ public class RecommendInit implements ApplicationRunner {
                         recommend.setModelNm(recommendRepository.findByModelGrpNm(recommendRepository.findByMakeNm(makeName[i % 6]).get(i%4)).get(0));
                         recommend.setTransmissioncdName(transmissionCdName[i%2]);
                         recommend.setUserId(recommendRepository.findUserId().get(i));
-                        recommend.setName(recommendRepository.findNameByUserId(recommendRepository.findUserId().get(i)));
+                        recommend.setName("강성조");
                         recommendRepository.save(recommend);
 
                 }
