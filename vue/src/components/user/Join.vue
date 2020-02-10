@@ -3,9 +3,8 @@
 		<link rel="stylesheet" href="/css/re_user.css?ver=6.9">
 		<div id="contents">
 			<div class="user_content">
-				<h3 class="policy_tit"><img src="https://www.kcar.com/resources/images/content/user/userInf_tit.gif" alt="기본정보 입력"></h3>
+				<h3 style="font-weight: 600"> 기본 정보 입력</h3>
 				<div class="user_info">
-					<h4></h4>
 					<table width="100%" class="t_user01">
 						<colgroup>
 							<col width="18%">

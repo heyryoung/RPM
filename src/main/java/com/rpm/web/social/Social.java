@@ -20,7 +20,6 @@ import java.util.List;
 @Table(name="SOCIALBOARD")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "boardSeq")
 public class Social implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "BOARDSEQ") @NotNull private Long boardSeq;
@@ -29,6 +28,7 @@ public class Social implements Serializable {
     @Column(name = "CARNAME", length=100) @NotNull private String carName;
     @Column(name = "BOARDCONTENT", length = 20000) @NotNull private String boardContent;
     @Column(name = "BOARDIMG", length=200) @NotNull private String boardImg;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USERSEQ")
