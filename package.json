@@ -2,7 +2,7 @@
   "dependencies": {
     "animated-number-vue": "^1.0.0",
     "axios": "^0.19.2",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "es6-promise": "^4.2.8",
     "filepond": "^4.9.5",
     "filepond-plugin-file-validate-type": "^1.2.4",
